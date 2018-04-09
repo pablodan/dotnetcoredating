@@ -27,6 +27,7 @@ namespace DatingApp.API
         {
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMvc();
+            services.AddCors();            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,7 +37,8 @@ namespace DatingApp.API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            //need to happend before we call MVC, the order does matter here unlike in the Configuration
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin().AllowCredentials()); //allow different reques ttypes.
             app.UseMvc();
         }
     }
